@@ -1,15 +1,38 @@
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import logo from './assets/logo.png';
+import * as ImagePicker from 'expo-image-picker';
 
 export default function App() {
+  const [selectedImage, setSelectedImage] = React.useState(null);
+
+  let openImagePickerAsync = async () => {
+    let pickerResult = await ImagePicker.launchImageLibraryAsync();
+    if (pickerResult.cancelled === true) {
+      return;
+    }
+    setSelectedImage({ localUri: pickerResult.uri });
+  }
+
+  if (selectedImage !== null) {
+    return (
+      <View style={styles.container}>
+        <Image
+          source={{ uri: selectedImage.localUri }}
+          style={styles.thumbnail}
+        />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <Image source={{ uri: 'https://res.cloudinary.com/khariokitony/image/upload/v1665753309/darth-jarjar.jpg' }} style={styles.logo} />
       <Text style={styles.instructions}>
         To share a photo press the button below!
       </Text>
-      <TouchableOpacity onPress={() => alert('Hello, world!')} style={styles.button}>
+      <TouchableOpacity onPress={openImagePickerAsync} style={styles.button}>
         <Text style={styles.buttonText}>Pick a photo</Text>
       </TouchableOpacity>
       <StatusBar style="auto" />
@@ -43,4 +66,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#fff',
   },
+  thumbnail: {
+    width: 300,
+    height: 300,
+    resizeMode: "contain"
+  }
 });
