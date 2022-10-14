@@ -42,7 +42,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Image source={{ uri: 'https://res.cloudinary.com/khariokitony/image/upload/v1665753309/darth-jarjar.jpg' }} style={styles.logo} />
+      <Image source={logo} style={styles.logo} />
       <Text style={styles.instructions}>
         To share a photo press the button below!
       </Text>
